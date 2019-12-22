@@ -1,7 +1,7 @@
 import { Command } from "vuerd-core";
 
 export interface Option {
-  imageUpload?: (files: File[], callback: (url: string) => void) => void;
+  imageUpload?: (files: File[] | Blob[], callback: (url: string) => void) => void;
   scope?: string[] | RegExp[];
   exclude?: string[] | RegExp[];
 }

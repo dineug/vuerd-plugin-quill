@@ -7,6 +7,7 @@
 <script lang="ts">
 import "quill/dist/quill.snow.css";
 import QuillEditor from "@/plugins/quill";
+import { base64StringToBlob } from "blob-util";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 const TOOLBAR_HEIGHT = 42;
@@ -18,7 +19,10 @@ export default class Quill extends Vue {
   @Prop({ type: String, default: "" })
   private value!: string;
 
-  public imageUpload?: (files: File[], callback: (url: string) => void) => void;
+  public imageUpload?: (
+    files: File[] | Blob[],
+    callback: (url: string) => void
+  ) => void;
   private inputFile: HTMLInputElement = document.createElement("input");
   private currentValue: string = "";
   private quill!: QuillEditor;
@@ -50,7 +54,9 @@ export default class Quill extends Vue {
       imageResize: {
         modules: ["Resize", "DisplaySize", "Toolbar"]
       },
-      imageDrop: true
+      imageDropAndPaste: {
+        handler: this.imageDropHandler
+      }
     },
     theme: "snow"
   };
@@ -66,6 +72,26 @@ export default class Quill extends Vue {
       const container = editor.querySelector(".ql-editor");
       if (container) {
         container.innerHTML = value;
+      }
+    }
+  }
+
+  private imageDropHandler(base64URL: string, type: string) {
+    if (this.imageUpload && typeof this.imageUpload === "function") {
+      const blob = base64StringToBlob(
+        base64URL.replace(/^data:image\/\w+;base64,/, ""),
+        type
+      );
+      this.imageUpload([blob], url => {
+        const range = this.quill.getSelection();
+        if (range) {
+          this.quill.insertEmbed(range.index, "image", url);
+        }
+      });
+    } else {
+      const range = this.quill.getSelection();
+      if (range) {
+        this.quill.insertEmbed(range.index, "image", base64URL);
       }
     }
   }
@@ -98,7 +124,10 @@ export default class Quill extends Vue {
 
   private created() {
     this.inputFile.setAttribute("type", "file");
-    this.inputFile.setAttribute("accept", ".png,.jpg,.jpeg,.gif");
+    this.inputFile.setAttribute(
+      "accept",
+      ".png,.gif,.pjp,.jpg,.pjpeg,.jpeg,.jfif,.bmp,.ico"
+    );
     this.inputFile.setAttribute("multiple", "");
     this.inputFile.addEventListener("change", this.onChangeFile);
   }
