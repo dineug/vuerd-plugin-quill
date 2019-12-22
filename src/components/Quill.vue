@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import "quill/dist/quill.snow.css";
-import QuillEditor from "quill";
+import QuillEditor from "@/plugins/quill";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 const TOOLBAR_HEIGHT = 42;
@@ -46,7 +46,11 @@ export default class Quill extends Vue {
           { script: "super" }
         ],
         ["clean"]
-      ]
+      ],
+      imageResize: {
+        modules: ["Resize", "DisplaySize", "Toolbar"]
+      },
+      imageDrop: true
     },
     theme: "snow"
   };
