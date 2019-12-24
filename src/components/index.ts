@@ -5,6 +5,7 @@ import { Option } from "@/types";
 export default {
   install(command: Command, option?: Option) {
     const editor: Editor = {
+      name: "Quill",
       component: Quill,
       scope: ["rich"],
       option: {
