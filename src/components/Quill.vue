@@ -12,7 +12,9 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 const TOOLBAR_HEIGHT = 42;
 
-@Component
+@Component({
+  name: "Quill"
+})
 export default class Quill extends Vue {
   @Prop({ type: Number, default: 0 })
   private height!: number;
@@ -71,6 +73,7 @@ export default class Quill extends Vue {
       const editor = this.$refs.editor as HTMLElement;
       const container = editor.querySelector(".ql-editor");
       if (container) {
+        this.currentValue = value;
         container.innerHTML = value;
       }
     }
