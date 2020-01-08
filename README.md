@@ -73,10 +73,21 @@ Vue.use(VuerdCore);
 ## Option interface
 ```typescript
 export interface Option {
-  imageUpload?: (files: File[] | Blob[], callback: (url: string) => void) => void;
+  imageUpload?: (
+    files: File[] | Blob[],
+    callback: (url: string) => void
+  ) => void;
   scope?: string[] | RegExp[];
   exclude?: string[] | RegExp[];
+  editorOption?: EditorOption;
 }
+
+export interface EditorOption {
+  theme?: Theme;
+  toolbar?: any[];
+}
+
+export type Theme = "snow" | "bubble";
 ```
 ## Option
 | Name | Type | Default | Describe |
@@ -84,6 +95,37 @@ export interface Option {
 | imageUpload | function | base64 | image upload |
 | scope | [String \| RegExp] | ["rich"] | file designation(string extension) |
 | exclude | [String \| RegExp] |  | exception file designation(string extension) |
- 
+| editorOption | EditorOption | default option | quill option |
+
+## default EditorOption
+```javascript
+editorOption = {
+  theme: "snow",
+  toolbar: [
+    [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+    [
+      { color: [] },
+      { background: [] },
+      "bold",
+      "italic",
+      "underline",
+      "strike"
+    ],
+    ["blockquote", "code-block"],
+    ["link", "image", "video"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+      { align: [] },
+      { script: "sub" },
+      { script: "super" }
+    ],
+    ["clean"]
+  ]
+};
+```
+
 ## License
 [MIT](https://github.com/vuerd/vuerd-plugin-quill/blob/master/LICENSE)

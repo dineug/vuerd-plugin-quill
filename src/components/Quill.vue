@@ -6,8 +6,10 @@
 
 <script lang="ts">
 import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
 import QuillEditor from "@/plugins/quill";
 import { base64StringToBlob } from "blob-util";
+import { EditorOption } from "@/types";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 const TOOLBAR_HEIGHT = 42;
@@ -28,7 +30,7 @@ export default class Quill extends Vue {
   private inputFile: HTMLInputElement = document.createElement("input");
   private currentValue: string = "";
   private quill!: QuillEditor;
-  private option = {
+  private editorOption = {
     modules: {
       toolbar: [
         [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
@@ -62,6 +64,7 @@ export default class Quill extends Vue {
     },
     theme: "snow"
   };
+  public option?: EditorOption;
 
   get quillStyle(): string {
     return `height: ${this.height - TOOLBAR_HEIGHT}px;`;
@@ -133,11 +136,19 @@ export default class Quill extends Vue {
     );
     this.inputFile.setAttribute("multiple", "");
     this.inputFile.addEventListener("change", this.onChangeFile);
+    if (this.option) {
+      if (this.option.toolbar !== undefined) {
+        this.editorOption.modules.toolbar = this.option.toolbar;
+      }
+      if (this.option.theme !== undefined) {
+        this.editorOption.theme = this.option.theme;
+      }
+    }
   }
 
   private mounted() {
     const editor = this.$refs.editor as HTMLElement;
-    this.quill = new QuillEditor(editor, this.option);
+    this.quill = new QuillEditor(editor, this.editorOption);
     this.quill.on("text-change", this.onChange);
     if (this.imageUpload && typeof this.imageUpload === "function") {
       this.quill.getModule("toolbar").addHandler("image", () => {
