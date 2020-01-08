@@ -30,7 +30,7 @@ export default class Quill extends Vue {
   private inputFile: HTMLInputElement = document.createElement("input");
   private currentValue: string = "";
   private quill!: QuillEditor;
-  private editorOption = {
+  private editorOption: any = {
     modules: {
       toolbar: [
         [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
@@ -63,7 +63,7 @@ export default class Quill extends Vue {
       }
     },
     theme: "snow"
-  } as any;
+  };
   public option?: EditorOption;
 
   get quillStyle(): string {
