@@ -12,7 +12,7 @@ export interface Option {
 
 export interface EditorOption {
   theme?: Theme;
-  toolbar?: any[];
+  toolbar?: any[] | boolean;
 }
 
 export type Theme = "snow" | "bubble";

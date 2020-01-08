@@ -1,6 +1,6 @@
 {
   "name": "vuerd-plugin-quill",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "vuerd-core plugin quill",
   "main": "dist/vuerd-plugin-quill.common.js",
   "typings": "src/types/index.d.ts",

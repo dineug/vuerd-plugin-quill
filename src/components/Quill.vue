@@ -63,7 +63,7 @@ export default class Quill extends Vue {
       }
     },
     theme: "snow"
-  };
+  } as any;
   public option?: EditorOption;
 
   get quillStyle(): string {
